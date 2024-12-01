@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: "Courier New", Courier, monospace;
+      overflow: hidden; /* Prevent scrolling */
+    }
+    .message {
+      position: absolute;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Message to display
+    const messages = [
+      "System Error!",
+      "Virus Detected!",
+      "Hacking in progress...",
+      "Deleting files...",
+      "Encrypting your data...",
+      "Access Denied!",
+    ];
+
+    // Random position generator
+    function randomPosition() {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      return { x, y };
+    }
+
+    // Create and display random messages
+    function createMessage() {
+      const message = document.createElement("div");
+      message.className = "message";
+      message.textContent = messages[Math.floor(Math.random() * messages.length)];
+      const { x, y } = randomPosition();
+      message.style.left = `${x}px`;
+      message.style.top = `${y}px`;
+      document.body.appendChild(message);
+
+      // Remove the message after a short time
+      setTimeout(() => message.remove(), 2000);
+    }
+
+    // Simulate "typing" animation
+    function typeEffect(text, callback) {
+      const container = document.createElement("div");
+      container.className = "message";
+      document.body.appendChild(container);
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          container.textContent += text[i];
+          i++;
+        } else {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, 100);
+    }
+
+    // Start the prank effect
+    function startPrank() {
+      // Simulate a typing message first
+      typeEffect("Initializing virus...\n", () => {
+        setInterval(createMessage, 300); // Create random messages every 300ms
+      });
+
+      // Change the background color every second
+      setInterval(() => {
+        document.body.style.backgroundColor =
+          document.body.style.backgroundColor === "black" ? "red" : "black";
+      }, 1000);
+    }
+
+    // Start prank when the page loads
+    startPrank();
+  </script>
+</body>
+</html>
