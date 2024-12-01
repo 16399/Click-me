@@ -3,83 +3,45 @@
 <head>
   <style>
     body {
-      background-color: black;
-      color: lime;
-      font-family: "Courier New", Courier, monospace;
-      overflow: hidden; /* Prevent scrolling */
-    }
-    .message {
-      position: absolute;
-      font-size: 18px;
+      font-family: Arial, sans-serif;
+      white-space: pre-line; /* Keeps line breaks */
     }
   </style>
 </head>
 <body>
+  <div id="output"></div>
+
   <script>
-    // Message to display
-    const messages = [
-      "System Error!",
-      "Virus Detected!",
-      "Hacking in progress...",
-      "Deleting files...",
-      "Encrypting your data...",
-      "Access Denied!",
-    ];
+    let outputDiv = document.getElementById("output");
+    let totalLines = 100; // Number of lines to display
+    let message = "Gf= dipression (sochle bosdi k 💀)"; // Message to display
+    let typingSpeed = 20; // Speed of typing each character in milliseconds
+    let lineDelay = 50; // Delay between each line in milliseconds
 
-    // Random position generator
-    function randomPosition() {
-      const x = Math.random() * window.innerWidth;
-      const y = Math.random() * window.innerHeight;
-      return { x, y };
-    }
-
-    // Create and display random messages
-    function createMessage() {
-      const message = document.createElement("div");
-      message.className = "message";
-      message.textContent = messages[Math.floor(Math.random() * messages.length)];
-      const { x, y } = randomPosition();
-      message.style.left = `${x}px`;
-      message.style.top = `${y}px`;
-      document.body.appendChild(message);
-
-      // Remove the message after a short time
-      setTimeout(() => message.remove(), 2000);
-    }
-
-    // Simulate "typing" animation
-    function typeEffect(text, callback) {
-      const container = document.createElement("div");
-      container.className = "message";
-      document.body.appendChild(container);
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < text.length) {
-          container.textContent += text[i];
-          i++;
-        } else {
-          clearInterval(interval);
-          if (callback) callback();
-        }
-      }, 100);
-    }
-
-    // Start the prank effect
-    function startPrank() {
-      // Simulate a typing message first
-      typeEffect("Initializing virus...\n", () => {
-        setInterval(createMessage, 300); // Create random messages every 300ms
+    function typeLine(text) {
+      return new Promise((resolve) => {
+        let currentCharIndex = 0;
+        let interval = setInterval(() => {
+          if (currentCharIndex < text.length) {
+            outputDiv.innerHTML += text[currentCharIndex];
+            currentCharIndex++;
+          } else {
+            clearInterval(interval);
+            outputDiv.innerHTML += "\n"; // Add a new line after typing the full message
+            resolve(); // Resolve the promise once typing is done
+          }
+        }, typingSpeed);
       });
-
-      // Change the background color every second
-      setInterval(() => {
-        document.body.style.backgroundColor =
-          document.body.style.backgroundColor === "black" ? "red" : "black";
-      }, 1000);
     }
 
-    // Start prank when the page loads
-    startPrank();
+    async function startTyping() {
+      for (let i = 1; i <= totalLines; i++) {
+        await typeLine(message);
+        await new Promise((resolve) => setTimeout(resolve, lineDelay));
+      }
+    }
+
+    startTyping();
   </script>
 </body>
 </html>
